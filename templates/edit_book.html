@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Book - BookBuddy{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Edit Book</h2>
+                {% if entry %}
+                    <p class="mb-4"><strong>{{ entry.get('title', 'Unknown Title') }}</strong></p>
+                    <form method="post">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            {{ form.status.label(class_='form-label') }}
+                            {{ form.status(class_='form-select') }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.rating.label(class_='form-label') }}
+                            {{ form.rating(class_='form-control', placeholder='1-5') }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.notes.label(class_='form-label') }}
+                            {{ form.notes(class_='form-control', rows=3) }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <a href="{{ url_for('books.bookshelf') }}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                {% else %}
+                    <p class="text-danger">Book not found.</p>
+                    <a href="{{ url_for('books.bookshelf') }}" class="btn btn-secondary">Back to Bookshelf</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - BookBuddy{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 class="card-title mb-4">Welcome to BookBuddy</h1>
+                <p class="card-text lead">Track your reading journey and discover amazing books.</p>
+                <div class="mt-5">
+                    <h5 class="mb-4">What can you do?</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">Search for books by title or author using Google Books API</li>
+                        <li class="mb-3">Create a personal bookshelf to organize your reading list</li>
+                        <li class="mb-3">Rate books and add personal notes or mini-reviews</li>
+                        <li class="mb-3">Track your reading status: To Read, Reading, or Finished</li>
+                    </ul>
+                </div>
+                {% if current_user and current_user.is_authenticated %}
+                    <div class="mt-5">
+                        <a href="{{ url_for('books.search') }}" class="btn btn-outline-primary btn-lg me-2">Search Books</a>
+                        <a href="{{ url_for('books.bookshelf') }}" class="btn btn-outline-primary btn-lg">My Bookshelf</a>
+                    </div>
+                {% else %}
+                    <div class="mt-5">
+                        <p class="mb-3"><strong>Get started by creating an account or logging in.</strong></p>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg me-2">Register</a>
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg">Login</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Book - BookBuddy{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Add Book to Bookshelf</h2>
+                <p class="text-muted mb-4">Set your reading status and add notes for this book.</p>
+                <form method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.status.label(class_='form-label') }}
+                        {{ form.status(class_='form-select') }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.rating.label(class_='form-label') }}
+                        {{ form.rating(class_='form-control', placeholder='1-5 (optional)') }}
+                        <small class="form-text text-muted">Enter a number from 1 to 5</small>
+                    </div>
+                    <div class="mb-3">
+                        {{ form.notes.label(class_='form-label') }}
+                        {{ form.notes(class_='form-control', rows=3, placeholder='Add your notes, thoughts, or mini-review...') }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save to Bookshelf</button>
+                    <a href="{{ url_for('books.bookshelf') }}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

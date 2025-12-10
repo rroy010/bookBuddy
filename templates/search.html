@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Books - BookBuddy{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="mb-4">Search Books</h2>
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="input-group input-group-lg">
+                        {{ form.query(class_='form-control', placeholder='Search by title or author...') }}
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if results %}
+            <h4 class="mb-3">Search Results ({{ results|length }} found)</h4>
+            <div class="row">
+            {% for item in results %}
+                {% set volume = item['volumeInfo'] %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="row g-0 h-100">
+                            <div class="col-md-4">
+                                {% if volume.get('imageLinks', {}).get('thumbnail') %}
+                                    <img src="{{ volume['imageLinks']['thumbnail'] }}" class="img-fluid rounded-start" alt="{{ volume.get('title', 'Book cover') }}" style="height: 100%; object-fit: cover;">
+                                {% else %}
+                                    <div style="height: 100%; background-color: #e9ecef; display: flex; align-items: center; justify-content: center;" class="rounded-start">
+                                        <span class="text-muted">No Cover</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body d-flex flex-column h-100">
+                                    <h5 class="card-title">{{ volume.get('title', 'Unknown Title') }}</h5>
+                                    <p class="card-text text-muted small">
+                                        {% if volume.get('authors') %}
+                                            <strong>By:</strong> {{ volume['authors'] | join(', ') }}
+                                        {% else %}
+                                            <strong>Author:</strong> Unknown
+                                        {% endif %}
+                                    </p>
+                                    {% if volume.get('description') %}
+                                    <p class="card-text text-muted" style="font-size: 0.9rem;">{{ volume['description'][:120] }}...</p>
+                                    {% endif %}
+                                    <div class="mt-auto">
+                                        {% if current_user.is_authenticated %}
+                                            <a href="{{ url_for('books.add_book', volume_id=item['id']) }}" class="btn btn-sm btn-success">Add to Bookshelf</a>
+                                        {% else %}
+                                            <small class="text-muted"><a href="{{ url_for('auth.login') }}">Log in</a> to add books to your bookshelf.</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% elif form.is_submitted() %}
+            <div class="alert alert-warning">
+                <p class="mb-0">No books found for that search.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

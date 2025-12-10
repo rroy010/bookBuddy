@@ -1,0 +1,1 @@
+"""Package for registering Flask blueprints."""
